@@ -18,14 +18,14 @@ from os import listdir
 ##########################
 
 emailAddress = 'chris.b.cutler@gmail.com'
-subjectDir = '/fslhome/ccutle25/compute/Repeatability/Dehydration/Rerun/' # Where are your original subjects found?
+subjectDir = '/fslhome/ccutle25/compute/Repeatability/ANTs/' # Where are your original subjects found?
 antsLocation = '/fslhome/ccutle25/bin/antsbin/bin' # File path to your ants bin
 acpcLocation = '/fslhome/ccutle25/apps/art'
 logfilesDir = '/fslhome/ccutle25/logfiles/'
-templateLocation = '/fslhome/ccutle25/templates/OASIS/'
+templateLocation = '/fslhome/ccutle25/templates/Repeat/'
 c3dLocation = '/fslhome/ccutle25/bin'
-scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/dehydration/rerun/' # Where do you want to save your scripts?
-scriptName = 'repeat_rerun' # What do you want the name of the scripts to be?
+scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/ANTs/pre/' # Where do you want to save your scripts?
+scriptName = 'repeat_ANTs_' # What do you want the name of the scripts to be?
 walltime = '50:00:00' # How long will this run? HH:MM:SS
 
 ###################################################################
@@ -72,18 +72,14 @@ echo ACPC align for: $files
 -o $files/acpc.nii \
 -i $files/t1.nii
 
-#Voxel Resampling to 1x1x1mm Isometric
-echo Resampling image from $files to 1x1x1mm.
-~/apps/c3d/bin/c3d -verbose $files/acpc.nii -resample-mm 1x1x1mm -o $files/resampled.nii.gz
-
 #Skull Stripping
 echo Skull Strip
 sh /fslhome/ccutle25/bin/antsbin/bin/antsBrainExtraction.sh \
 -d 3 \
--a $files/resampled.nii.gz \
--e /fslhome/ccutle25/templates/OASIS/OASIS-30_Atropos_template/T_template0.nii.gz \
--m /fslhome/ccutle25/templates/OASIS/OASIS-30_Atropos_template/T_template0_BrainCerebellumProbabilityMask.nii.gz \
--f /fslhome/ccutle25/templates/OASIS/OASIS-30_Atropos_template/T_template0_BrainCerebellumRegistrationMask.nii.gz \
+-a $files/acpc.nii \
+-e /fslhome/ccutle25/templates/Repeat/Repeat_template.nii.gz \
+-m /fslhome/ccutle25/templates/Repeat/template_BrainCerebellumProbabilityMask.nii.gz \
+-f /fslhome/ccutle25/templates/Repeat/template_BrainCerebellumRegistrationMask.nii.gz \
 -o $files/ \
 """
         )
@@ -94,4 +90,3 @@ sh /fslhome/ccutle25/bin/antsbin/bin/antsBrainExtraction.sh \
         subjectFile.write(myScript)
         subjectFile.close()
         i+=1
-
