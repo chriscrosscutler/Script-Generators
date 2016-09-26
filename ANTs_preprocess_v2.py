@@ -17,7 +17,6 @@ from os import listdir
 # CHANGE THESE VARIABLES #
 ##########################
 
-emailAddress = 'email'
 subjectDir = 'subject directory' # Where are your original subjects found?
 antsLocation = 'ants bin' # File path to your ants bin
 acpcLocation = 'acpc location'
@@ -48,10 +47,6 @@ for subject in dirList: # Search the designated folder
 #SBATCH -o """ +logfilesDir+ """output_""" + scriptName + subject + """.txt
 #SBATCH -e """ +logfilesDir+ """error_""" + scriptName + subject + """.txt
 #SBATCH -J \"""" + scriptName + str(i) + """\" # job name
-#SBATCH --mail-user=""" + emailAddress + """ # email address
-#SBATCH --mail-type=BEGIN
-#SBATCH --mail-type=END
-#SBATCH --mail-type=FAIL
 
 name=""" +subject+ """
 files=""" +subjectDir+ subject+"""
@@ -59,11 +54,6 @@ ARTHOME=""" +acpcLocation+ """
 export ARTHOME
 export ANTSPATH=""" + antsLocation + """
 PATH=${ANTSPATH}:${PATH}
-
-
-############################################################################
-#COMMENT OUT ONE OR THE OTHER ACPC ALIGNMENT METHOD BEFORE RUNNING SCRIPT  #
-############################################################################
 
 #ACPCDetect Alignment
 echo ACPC align for: $files
@@ -95,4 +85,3 @@ sh /fslhome/ccutle25/bin/antsbin/bin/antsBrainExtraction.sh \
         subjectFile.write(myScript)
         subjectFile.close()
         i+=1
-
