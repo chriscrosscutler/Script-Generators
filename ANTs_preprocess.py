@@ -18,14 +18,23 @@ from os import listdir
 ##########################
 
 emailAddress = 'chris.b.cutler@gmail.com'
+<<<<<<< HEAD
 subjectDir = '/fslhome/ccutle25/compute/Repeatability/ANTs/sub5_9/' # Where are your original subjects found?
+=======
+subjectDir = '/fslhome/ccutle25/compute/Repeatability/ANTs/' # Where are your original subjects found?
+>>>>>>> origin/master
 antsLocation = '/fslhome/ccutle25/bin/antsbin/bin' # File path to your ants bin
 acpcLocation = '/fslhome/ccutle25/apps/art'
 logfilesDir = '/fslhome/ccutle25/logfiles/'
 templateLocation = '/fslhome/ccutle25/templates/Repeat/'
 c3dLocation = '/fslhome/ccutle25/bin'
+<<<<<<< HEAD
 scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/ANTs/sub5_9/' # Where do you want to save your scripts?
 scriptName = 'repeat_ANTs' # What do you want the name of the scripts to be?
+=======
+scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/ANTs/pre/' # Where do you want to save your scripts?
+scriptName = 'repeat_ANTs_' # What do you want the name of the scripts to be?
+>>>>>>> origin/master
 walltime = '50:00:00' # How long will this run? HH:MM:SS
 
 ###################################################################
@@ -61,10 +70,18 @@ echo $files
 -o $files/acpc.nii \
 -i $files/t1.nii
 
+<<<<<<< HEAD
+=======
+#Skull Stripping
+>>>>>>> origin/master
 echo Skull Strip
 sh """ +antsLocation+ """/antsBrainExtraction.sh \
 -d 3 \
+<<<<<<< HEAD
 -a $files/t1.nii.gz \
+=======
+-a $files/acpc.nii \
+>>>>>>> origin/master
 -e /fslhome/ccutle25/templates/Repeat/Repeat_template.nii.gz \
 -m /fslhome/ccutle25/templates/Repeat/template_BrainCerebellumProbabilityMask.nii.gz \
 -f /fslhome/ccutle25/templates/Repeat/template_BrainCerebellumRegistrationMask.nii.gz \
