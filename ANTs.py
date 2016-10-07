@@ -15,14 +15,14 @@ from os import listdir
 ##########################
 
 emailAddress = 'chris.b.cutler@gmail.com'
-subjectDir = '/fslhome/ccutle25/compute/Repeatability/Dehydration/Rerun/' # Where are your original subjects found?
+subjectDir = '/fslhome/ccutle25/compute/Repeatability/ANTsCT/' # Where are your original subjects found?
 antsLocation = '/fslhome/ccutle25/bin/antsbin/bin/' # File path to your ants bin
 acpcLocation = '/fslhome/ccutle25/apps/art'
 logfilesDir = '/fslhome/ccutle25/logfiles/'
-templateLocation = '/fslhome/ccutle25/templates/OASIS/'
+templateLocation = '/fslhome/ccutle25/templates/repeat_templates/head/'
 c3dLocation = '/fslhome/ccutle25/bin'
-scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/dehydration/rerun/' # Where do you want to save your scripts?
-scriptName = 'rerun' # What do you want the name of the scripts to be?
+scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/ANTsCT/ants/' # Where do you want to save your scripts?
+scriptName = 'repeat_ANTsCT_ants_' # What do you want the name of the scripts to be?
 walltime = '50:00:00' # How long will this run? HH:MM:SS
 
 ###################################################################
@@ -56,9 +56,17 @@ export ARTHOME
 export ANTSPATH=""" + antsLocation + """
 PATH=${ANTSPATH}:${PATH}
 
-
-
-
+mkdir $files/antsCT/
+~/bin/antsbin/bin/antsCorticalThickness.sh \
+-d 3 \
+-a $files/acpc.nii.gz \
+-e """+ templateLocation + """Repeat_template_head.nii.gz \
+-t """+ templateLocation + """template_BrainCerebellum.nii.gz \
+-m """+ templateLocation + """template_BrainCerebellumProbabilityMask.nii.gz \
+-f """+ templateLocation + """template_BrainCerebellumExtractionMask.nii.gz \
+-p """+ templateLocation + """/priors/priors%d.nii.gz \
+-q 1 \
+-o $files/antsCT/
 """
         )
         print(myScript)
