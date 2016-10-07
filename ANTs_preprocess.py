@@ -67,7 +67,7 @@ echo $files
 """ + acpcLocation + """/acpcdetect \
 -M \
 -o $files/acpc.nii \
--i $files/t1_crop_1.nii
+-i $files/t1_Crop_1.nii
 """
         )
         print(myScript)

@@ -59,7 +59,7 @@ PATH=${ANTSPATH}:${PATH}
 mkdir $files/antsCT/
 ~/bin/antsbin/bin/antsCorticalThickness.sh \
 -d 3 \
--a $files/acpc.nii.gz \
+-a $files/acpc.nii \
 -e """+ templateLocation + """Repeat_template_head.nii.gz \
 -t """+ templateLocation + """template_BrainCerebellum.nii.gz \
 -m """+ templateLocation + """template_BrainCerebellumProbabilityMask.nii.gz \
