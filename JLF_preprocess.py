@@ -54,20 +54,27 @@ ARTHOME=""" +acpcLocation+ """
 export ARTHOME
 export ANTSPATH=""" + antsLocation + """
 PATH=${ANTSPATH}:${PATH}
-
-#Convert DICOMs
-~/bin/dcm2niix/bin/dcm2niix \
--o $files/ \
--x y \
--f t1 \
-$files/
-
 #ACPC align the T1 image.
 echo $files
 """ + acpcLocation + """/acpcdetect \
 -M \
 -o $files/acpc.nii \
--i $files/t1_crop_1.nii
+-i $files/t1.nii
+
+#Skull Stripping
+
+echo Skull Strip
+sh """ +antsLocation+ """/antsBrainExtraction.sh \
+-d 3 \
+<<<<<<< HEAD
+-a $files/t1.nii.gz \
+=======
+-a $files/acpc.nii \
+>>>>>>> origin/master
+-e /fslhome/ccutle25/templates/Repeat/Repeat_template.nii.gz \
+-m /fslhome/ccutle25/templates/Repeat/template_BrainCerebellumProbabilityMask.nii.gz \
+-f /fslhome/ccutle25/templates/Repeat/template_BrainCerebellumRegistrationMask.nii.gz \
+-o $files/ \
 """
         )
         print(myScript)
