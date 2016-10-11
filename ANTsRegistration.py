@@ -15,6 +15,8 @@ c3dLocation = '/fslhome/ccutle25/bin'
 scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/ANTsCT/ants/' # Where do you want to save your scripts?
 scriptName = 'repeat_ANTsCT_ants_' # What do you want the name of the scripts to be?
 walltime = '50:00:00' # How long will this run? HH:MM:SS
+out = 'ANTsReg_' #prefix for the output files
+Labels = '~/compute/Repeat_template/sub_1/labels/' #where the jlf labels are stored
 
 ###################################################################
 # ONLY CHANGE THE FOLLOWING SCRIPT IF YOU KNOW WHAT YOU ARE DOING #
@@ -47,17 +49,34 @@ export ARTHOME
 export ANTSPATH=""" + antsLocation + """
 PATH=${ANTSPATH}:${PATH}
 
-mkdir $files/antsCT/
-~/bin/antsbin/bin/antsCorticalThickness.sh \
--d 3 \
--a $files/acpc.nii \
--e """+ templateLocation + """Repeat_template_head.nii.gz \
--t """+ templateLocation + """template_BrainCerebellum.nii.gz \
--m """+ templateLocation + """template_BrainCerebellumProbabilityMask.nii.gz \
--f """+ templateLocation + """template_BrainCerebellumExtractionMask.nii.gz \
--p """+ templateLocation + """/priors/priors%d.nii.gz \
--q 1 \
--o $files/antsCT/
+FIX=${templateLocation}/Repeat_template_brain.nii.gz
+MOV=${files}/antsCT/ExtractedBrainN4.nii.gz
+INTENSITY=CC[$FIX,${MOV},4,4]
+
+#ANTs Registration
+"""+antsLocation+"""ANTS \
+3 \
+-o """+out+""" \
+-i 100x100x100x20 \
+-t SyN[0.1] \
+-r Gauss[3,0.5] \
+-m $INTENSITY
+
+#Warp subject to template
+for i in{ls """+Labels+"""}; do
+path=/path/to/labels/
+
+FIXLabel=“${i/$path}”
+FINALOUT=ants_”${i/$path}"
+
+WarpImageMultiTransform $DIM $MOV ${OUT}toTemplate.nii.gz ${OUT}Warp.nii.gz ${OUT}Affine.txt -R $FIX
+WarpImageMultiTransform $DIM $FIX ${OUT}toMov.nii.gz -i ${OUT}Affine.txt ${OUT}InverseWarp.nii.gz -R $MOV
+WarpImageMultiTransform $DIM $FIXLabel $FINALOUT -i ${OUT}Affine.txt ${OUT}InverseWarp.nii.gz -R $MOV
+
+#thresh/binarize each ROI
+#c3d <input.nii.gz> -thresh 0.3 1 1 0 <output.nii.gz>
+
+done
 """
         )
         print(myScript)
