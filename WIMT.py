@@ -10,13 +10,14 @@ subjectDir = '/fslhome/ccutle25/compute/Repeatability/ANTsCT/' # Where are your 
 antsLocation = '/fslhome/ccutle25/bin/antsbin/bin/' # File path to your ants bin
 acpcLocation = '/fslhome/ccutle25/apps/art'
 logfilesDir = '/fslhome/ccutle25/logfiles/'
-templateLocation = '~/templates/repeat_templates/brain/Repeat_template_brain.nii.gz'
+templateLocation = '/fslhome/ccutle25/templates/repeat_templates/head/'
 c3dLocation = '/fslhome/ccutle25/bin'
-scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/ANTsReg/' # Where do you want to save your scripts?
-scriptName = 'repeat_ANTsReg' # What do you want the name of the scripts to be?
+scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/ANTsCT/ants/' # Where do you want to save your scripts?
+scriptName = 'repeat_ANTsCT_ants_' # What do you want the name of the scripts to be?
 walltime = '50:00:00' # How long will this run? HH:MM:SS
 out = 'ANTsReg_' #prefix for the output files
 Labels = '~/compute/Repeat_template/sub_1/labels/' #where the jlf labels are stored
+FIX= '/fslhome/ccutle25/templates/repeat_templates/head/Repeat_template_brain.nii.gz' # location of the extracted Brain image from your template
 
 ###################################################################
 # ONLY CHANGE THE FOLLOWING SCRIPT IF YOU KNOW WHAT YOU ARE DOING #
@@ -49,19 +50,24 @@ export ARTHOME
 export ANTSPATH=""" + antsLocation + """
 PATH=${ANTSPATH}:${PATH}
 
-FIX="""+templateLocation+"""
-MOV=${files}/antsCT/ExtractedBrainON4.nii.gz
-INTENSITY=CC[$FIX,${MOV},4,4]
+MOV=${files}/antsCT/ExtractedBrainN4.nii.gz
 
-#ANTs Registration
-"""+antsLocation+"""ANTS \
-3 \
--o """+out+""" \
--i 100x100x100x20 \
--t SyN[0.1] \
--r Gauss[3,0.5] \
--m $INTENSITY
+#Warp subject to template
+for i in{ls """+Labels+"""}; do
+path="""+Labels+"""
 
+FIXLabel=“${i/$path}”
+FINALOUT=ants_”${i/$path}"
+OUT=${files}/antsCT/"""+out+"""
+
+WarpImageMultiTransform 3 $MOV ${OUT}toTemplate.nii.gz ${OUT}Warp.nii.gz ${OUT}Affine.txt -R """+FIX+"""
+WarpImageMultiTransform 3 """+FIX+""" ${OUT}toMov.nii.gz -i ${OUT}Affine.txt ${OUT}InverseWarp.nii.gz -R $MOV
+WarpImageMultiTransform 3 $FIXLabel $FINALOUT -i ${OUT}Affine.txt ${OUT}InverseWarp.nii.gz -R $MOV
+
+#thresh/binarize each ROI
+#c3d <input.nii.gz> -thresh 0.3 1 1 0 <output.nii.gz>
+
+done
 """
         )
         print(myScript)
