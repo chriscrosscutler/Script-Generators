@@ -50,7 +50,7 @@ export ANTSPATH=""" + antsLocation + """
 PATH=${ANTSPATH}:${PATH}
 
 FIX="""+templateLocation+"""
-MOV=${files}/antsCT/ExtractedBrainON4.nii.gz
+MOV=${files}/antsCT/ExtractedBrain0N4.nii.gz
 INTENSITY=CC[$FIX,${MOV},4,4]
 
 #ANTs Registration
