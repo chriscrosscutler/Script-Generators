@@ -1,4 +1,5 @@
 #!/bin/python
+# -*- coding: utf-8 -*-
 from os import listdir
 
 ##########################
@@ -12,11 +13,11 @@ acpcLocation = '/fslhome/ccutle25/apps/art'
 logfilesDir = '/fslhome/ccutle25/logfiles/'
 templateLocation = '/fslhome/ccutle25/templates/repeat_templates/head/'
 c3dLocation = '/fslhome/ccutle25/bin'
-scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/ANTsCT/ants/' # Where do you want to save your scripts?
-scriptName = 'repeat_ANTsCT_ants_' # What do you want the name of the scripts to be?
+scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/WIMT/' # Where do you want to save your scripts?
+scriptName = 'repeat_wimt_' # What do you want the name of the scripts to be?
 walltime = '50:00:00' # How long will this run? HH:MM:SS
-out = 'ANTsReg_' #prefix for the output files
-Labels = '~/compute/Repeat_template/sub_1/labels/' #where the jlf labels are stored
+out = 'wimt_' #prefix for the output files
+Labels = '~/compute/Repeat_template/sub_1/labels/posteriors/' #where the jlf labels are stored
 FIX= '/fslhome/ccutle25/templates/repeat_templates/head/Repeat_template_brain.nii.gz' # location of the extracted Brain image from your template
 
 ###################################################################
@@ -50,22 +51,21 @@ export ARTHOME
 export ANTSPATH=""" + antsLocation + """
 PATH=${ANTSPATH}:${PATH}
 
-MOV=${files}/antsCT/ExtractedBrainN4.nii.gz
+FIX="""+templateLocation+"""
+MOV=${files}/antsCT/ExtractedBrain0N4.nii.gz
 
 #Warp subject to template
-for i in{ls """+Labels+"""}; do
-path="""+Labels+"""
-
-FIXLabel=“${i/$path}”
-FINALOUT=ants_”${i/$path}"
-OUT=${files}/antsCT/"""+out+"""
+for i in $( ls """+Labels+""" ); do
+FIXLabel="${i/"""+Labels+"""}"
+FINALOUT=ants_"${i/"""+Labels+"""}"
+OUT=${files}/antsCT/ANTsReg_
 
 WarpImageMultiTransform 3 $MOV ${OUT}toTemplate.nii.gz ${OUT}Warp.nii.gz ${OUT}Affine.txt -R """+FIX+"""
 WarpImageMultiTransform 3 """+FIX+""" ${OUT}toMov.nii.gz -i ${OUT}Affine.txt ${OUT}InverseWarp.nii.gz -R $MOV
 WarpImageMultiTransform 3 $FIXLabel $FINALOUT -i ${OUT}Affine.txt ${OUT}InverseWarp.nii.gz -R $MOV
 
 #thresh/binarize each ROI
-#c3d <input.nii.gz> -thresh 0.3 1 1 0 <output.nii.gz>
+#c3d $FINALOUT -thresh 0.3 1 1 0 thresh_${FINALOUT}
 
 done
 """

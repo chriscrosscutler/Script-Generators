@@ -56,7 +56,7 @@ INTENSITY=CC[$FIX,${MOV},4,4]
 #ANTs Registration
 """+antsLocation+"""ANTS \
 3 \
--o """+out+""" \
+-o ${files}/antsCT/"""+out+""" \
 -i 100x100x100x20 \
 -t SyN[0.1] \
 -r Gauss[3,0.5] \
