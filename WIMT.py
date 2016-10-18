@@ -11,14 +11,14 @@ subjectDir = '/fslhome/ccutle25/compute/Repeatability/ANTsCT/' # Where are your 
 antsLocation = '/fslhome/ccutle25/bin/antsbin/bin/' # File path to your ants bin
 acpcLocation = '/fslhome/ccutle25/apps/art'
 logfilesDir = '/fslhome/ccutle25/logfiles/'
-templateLocation = '/fslhome/ccutle25/templates/repeat_templates/head/'
+templateLocation = '/fslhome/ccutle25/templates/repeat_templates/brain/'
 c3dLocation = '/fslhome/ccutle25/bin'
 scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/WIMT/' # Where do you want to save your scripts?
 scriptName = 'repeat_wimt_' # What do you want the name of the scripts to be?
 walltime = '50:00:00' # How long will this run? HH:MM:SS
 out = 'wimt_' #prefix for the output files
 Labels = '~/compute/Repeat_template/sub_1/labels/posteriors/' #where the jlf labels are stored
-FIX= '/fslhome/ccutle25/templates/repeat_templates/head/Repeat_template_brain.nii.gz' # location of the extracted Brain image from your template
+FIX= '/fslhome/ccutle25/templates/repeat_templates/brain/Repeat_template_brain.nii.gz' # location of the extracted Brain image from your template
 
 ###################################################################
 # ONLY CHANGE THE FOLLOWING SCRIPT IF YOU KNOW WHAT YOU ARE DOING #
@@ -51,7 +51,7 @@ export ARTHOME
 export ANTSPATH=""" + antsLocation + """
 PATH=${ANTSPATH}:${PATH}
 
-FIX="""+templateLocation+"""
+#FIX="""+templateLocation+"""
 MOV=${files}/antsCT/ExtractedBrain0N4.nii.gz
 
 #Warp subject to template
