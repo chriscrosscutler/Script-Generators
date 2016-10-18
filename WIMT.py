@@ -51,13 +51,16 @@ export ARTHOME
 export ANTSPATH=""" + antsLocation + """
 PATH=${ANTSPATH}:${PATH}
 
+
 #FIX="""+templateLocation+"""
 MOV=${files}/antsCT/ExtractedBrain0N4.nii.gz
-
+cd $files
 #Warp subject to template
+p="""+Labels+"""
 for i in $( ls """+Labels+""" ); do
-FIXLabel="${i/"""+Labels+"""}"
-FINALOUT=ants_"${i/"""+Labels+"""}"
+
+FIXLabel="${i/$p}"
+FINALOUT=ants_"${i/$p}"
 OUT=${files}/antsCT/ANTsReg_
 
 WarpImageMultiTransform 3 $MOV ${OUT}toTemplate.nii.gz ${OUT}Warp.nii.gz ${OUT}Affine.txt -R """+FIX+"""
