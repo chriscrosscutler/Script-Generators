@@ -52,7 +52,7 @@ export ANTSPATH=""" + antsLocation + """
 PATH=${ANTSPATH}:${PATH}
 
 
-#FIX="""+templateLocation+"""
+FIX="""+templateLocation+"""
 MOV=${files}/antsCT/ExtractedBrain0N4.nii.gz
 cd $files
 #Warp subject to template
@@ -68,7 +68,7 @@ WarpImageMultiTransform 3 """+FIX+""" ${OUT}toMov.nii.gz -i ${OUT}Affine.txt ${O
 WarpImageMultiTransform 3 $FIXLabel $FINALOUT -i ${OUT}Affine.txt ${OUT}InverseWarp.nii.gz -R $MOV
 
 #thresh/binarize each ROI
-#c3d $FINALOUT -thresh 0.3 1 1 0 thresh_${FINALOUT}
+c3d $FINALOUT -threshold 0.3 1 1 0 -o thresh_${FINALOUT}
 
 done
 """
