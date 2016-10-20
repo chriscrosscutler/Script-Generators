@@ -67,9 +67,6 @@ WarpImageMultiTransform 3 $MOV ${OUT}toTemplate.nii.gz ${OUT}Warp.nii.gz ${OUT}A
 WarpImageMultiTransform 3 """+FIX+""" ${OUT}toMov.nii.gz -i ${OUT}Affine.txt ${OUT}InverseWarp.nii.gz -R $MOV
 WarpImageMultiTransform 3 $FIXLabel $FINALOUT -i ${OUT}Affine.txt ${OUT}InverseWarp.nii.gz -R $MOV
 
-#thresh/binarize each ROI
-c3d $FINALOUT -threshold 0.3 1 1 0 -o thresh_${FINALOUT}
-
 done
 """
         )
