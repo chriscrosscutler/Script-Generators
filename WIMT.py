@@ -54,19 +54,23 @@ PATH=${ANTSPATH}:${PATH}
 
 FIX="""+templateLocation+"""
 MOV=${files}/antsCT/ExtractedBrain0N4.nii.gz
-cd $files
-#Warp subject to template
 p="""+Labels+"""
-for i in $( ls """+Labels+""" ); do
+OUT=ANTsReg_
 
-FIXLabel="${i/$p}"
-FINALOUT=ants_"${i/$p}"
-OUT=${files}/antsCT/ANTsReg_
 
-WarpImageMultiTransform 3 $MOV ${OUT}toTemplate.nii.gz ${OUT}Warp.nii.gz ${OUT}Affine.txt -R """+FIX+"""
-WarpImageMultiTransform 3 """+FIX+""" ${OUT}toMov.nii.gz -i ${OUT}Affine.txt ${OUT}InverseWarp.nii.gz -R $MOV
-WarpImageMultiTransform 3 $FIXLabel $FINALOUT -i ${OUT}Affine.txt ${OUT}InverseWarp.nii.gz -R $MOV
+cd ${files}/antsCT/
 
+WarpImageMultiTransform 3 $MOV ${OUT}toTemplate.nii.gz ${OUT}Warp.nii.gz ${OUT}Affine.txt -R $FIX
+WarpImageMultiTransform 3 $FIX ${OUT}toMov.nii.gz -i ${OUT}Affine.txt ${OUT}InverseWarp.nii.gz -R $MOV
+
+for i in ~/compute/Repeat_template/sub_1/labels/posteriors/P*; do
+    FIXLabel=$i
+    FINALOUT=ants_"${i/$p}".nii.gz
+    WarpImageMultiTransform 3 $FIXLabel $FINALOUT -i ${OUT}Affine.txt ${OUT}InverseWarp.nii.gz -R $MOV
+done
+
+for j in ants_Posteriors*; do
+  c3d $j -thresh 0.3 1 1 0 -o thresh_$j
 done
 """
         )
