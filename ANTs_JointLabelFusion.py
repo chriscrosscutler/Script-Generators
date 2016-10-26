@@ -15,14 +15,14 @@ from os import listdir
 ##########################
 
 emailAddress = 'chris.b.cutler@gmail.com'
-subjectDir = '/fslhome/ccutle25/compute/Repeat_template/' # Where are your original subjects found?
+subjectDir = '/fslhome/ccutle25/finalsub/' # Where are your original subjects found?
 antsLocation = '/fslhome/ccutle25/bin/antsbin/bin/' # File path to your ants bin
 acpcLocation = '/fslhome/ccutle25/apps/art'
 logfilesDir = '/fslhome/ccutle25/logfiles/'
 templateLocation = '/fslhome/ccutle25/templates/OASIS/'
 c3dLocation = '/fslhome/ccutle25/bin'
-scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/dehydration/repeat_template/' # Where do you want to save your scripts?
-scriptName = 'repeat_template' # What do you want the name of the scripts to be?
+scriptDir = '/fslhome/ccutle25/scripts/ants/repeatability/finalsub/' # Where do you want to save your scripts?
+scriptName = 'finalsubjlf' # What do you want the name of the scripts to be?
 walltime = '50:00:00' # How long will this run? HH:MM:SS
 
 ###################################################################
