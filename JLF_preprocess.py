@@ -70,7 +70,7 @@ sh """ +antsLocation+ """/antsBrainExtraction.sh \
 -e /fslhome/ccutle25/templates/Repeat/Repeat_template.nii.gz \
 -m /fslhome/ccutle25/templates/Repeat/template_BrainCerebellumProbabilityMask.nii.gz \
 -f /fslhome/ccutle25/templates/Repeat/template_BrainCerebellumRegistrationMask.nii.gz \
--o $files/ \
+-o $files/
 """
         )
         print(myScript)
